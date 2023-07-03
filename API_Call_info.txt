@@ -1,0 +1,102 @@
+Certainly! Here's an explanation of each line in the provided code:
+
+
+1. def fetch_data():
+This line defines a function named fetch_data().
+
+
+2. url = "https://test"
+A string variable url is assigned the value "https://test". This is the URL of the API from which data will be fetched.
+
+
+3. headers = {'Authorization': 'Basic ...'}
+A dictionary variable headers is defined with an authorization token. This is used for authentication when making API requests.
+
+
+4. params = {}
+A dictionary variable params is defined to hold any additional parameters that may be passed with the API request. Currently, it is empty.
+
+
+6. response = requests.get(url, headers=headers, params=params, verify=False)
+An HTTP GET request is made to the specified url with the provided headers and params. The response is stored in the response variable.
+
+
+8. response.raise_for_status()
+This line raises an exception if the response from the API contains an error status code (e.g., 4xx or 5xx). It ensures that any errors are handled appropriately.
+
+
+11. response_data = response.json()
+The JSON response from the API is converted to a Python dictionary using the json() method provided by the response object.
+
+
+14. for ticket in response_data.get("results", [])
+This line iterates over each ticket dictionary in the "results" key of the response_data dictionary. If there are no results, an empty list is used as the default value.
+
+
+15. if ticket.get("state") != "Closed"
+This line checks if the "state" key of the current ticket dictionary is not equal to "Closed". This is used to filter out closed tickets.
+
+
+16. open_tickets = [{...} for ticket in response_data.get("results", []) if ticket.get("state") != "Closed"]
+A list comprehension is used to create a new list open_tickets that contains dictionaries. Each dictionary represents an open ticket with selected key-value pairs from the original ticket dictionary.
+
+
+22. ticket_id = ticket_data["Id"]
+The ticket ID is extracted from the current ticket_data dictionary and stored in the ticket_id variable.
+
+
+23. ticket_url = f"{url}/{ticket_id}"
+A new URL specific to the current ticket ID is created by appending the ticket_id to the original url.
+
+
+24. ticket_response = requests.get(ticket_url, headers=headers, params=params, verify=False)
+An HTTP GET request is made to the ticket_url to fetch the details of the individual ticket. The response is stored in the ticket_response variable.
+
+
+25. ticket_response_data = ticket_response.json()
+The JSON response from the individual ticket request is converted to a Python dictionary using the json() method provided by the ticket_response object.
+
+
+28. extracted_ticket_data = {...}
+A new dictionary extracted_ticket_data is created to store the extracted details from the individual ticket response.
+
+
+31. ticket_data.update(extracted_ticket_data)
+The extracted_ticket_data dictionary is merged into the original ticket_data dictionary to include the extracted details.
+
+
+34. extracted_data.append(extracted_ticket_data)
+The extracted_ticket_data dictionary is added to the extracted_data list.
+
+
+
+37. ticket_data["Status"] = ticket_data.pop("Status")
+The "Status" key in the ticket_data dictionary is renamed to "Status" (just a renaming operation).
+
+40. return open_tickets, extracted_data
+The function fetch_data() returns the open_tickets list and extracted_data list as a tuple.
+
+43. def main():
+This line defines a function named main().
+
+45. open_tickets, extracted_data = fetch_data()
+The fetch_data() function is called, and the returned values (open_tickets and extracted_data) are assigned to variables.
+
+48. json_output = json.dumps(open_tickets, indent=4)
+The open_tickets list is converted to a formatted JSON string using json.dumps() method, and the result is assigned to the json_output variable.
+
+49. print("Open Tickets:")
+50. print(json_output)
+The title "Open Tickets:" is printed, followed by the json_output, which displays the JSON representation of the open tickets with indentation.
+
+52. extracted_data_output = json.dumps(extracted_data, indent=4)
+The extracted_data list is converted to a formatted JSON string using json.dumps() method, and the result is assigned to the extracted_data_output variable.
+
+53. print("Extracted Data:")
+54. print(extracted_data_output)
+The title "Extracted Data:" is printed, followed by the extracted_data_output, which displays the JSON representation of the extracted data with indentation.
+
+57. main()
+The main() function is called to start the execution of the script.
+
+This code fetches data from an API, filters out closed tickets, extracts additional details for each open ticket by making individual API requests, and then prints the open tickets and extracted data in a JSON format.
