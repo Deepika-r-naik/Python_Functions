@@ -1,0 +1,12 @@
+from ParseCredentials import parse_credentials
+
+def fetch_data():
+    url = "https://test"
+    username, password = parse_credentials()
+    headers = {'Authorization': f'Basic {username}:{password}'}
+    params = {}
+
+    # Rest of the code...
+
+def main():
+    # Rest of the code...
