@@ -1,0 +1,7 @@
+import yaml
+
+def parse_credentials():
+    with open('credentials.yaml') as file:
+        credentials = yaml.safe_load(file)
+    
+    return credentials['username'], credentials['password']
